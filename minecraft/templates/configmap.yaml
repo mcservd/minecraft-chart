@@ -4,7 +4,6 @@ metadata:
   name: minecraft
   labels:
     name: minecraft
-    version: {{ .Values.minecraft.version }}
 data:
   eula.txt: |
     eula={{ .Values.minecraft.acceptEula }}

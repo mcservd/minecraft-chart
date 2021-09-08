@@ -19,6 +19,12 @@ spec:
         - name: minecraft
           image: "{{ .Values.image.repository }}:{{ .Values.minecraft.version }}"
           imagePullPolicy: Always
+          command:
+            - "java"
+            - "-jar"
+            - "-Xmx4G"
+            - "server.jar"
+            - "--nogui"
           ports:
            - containerPort: 25565
           resources:
@@ -35,7 +41,16 @@ spec:
             - name: minecraft-configmap-volume
               mountPath: /opt/minecraft/server.properties
               subPath: server.properties
+            - name: minecraft-world-pvc-volume
+              mountPath: /opt/minecraft/world
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       volumes:
         - name: minecraft-configmap-volume
           configMap:
             name: minecraft
+        - name: minecraft-world-pvc-volume
+          persistentVolumeClaim:
+            claimName: minecraft-world-pvc

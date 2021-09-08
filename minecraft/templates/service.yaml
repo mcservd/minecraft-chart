@@ -5,6 +5,7 @@ metadata:
   labels:
     name: minecraft
 spec:
+  type: LoadBalancer
   selector:
     name: minecraft
   ports:
