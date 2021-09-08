@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  labels:
+    name: minecraft
+    version: {{ .Values.minecraft.version }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: minecraft
+  template:
+    metadata:
+      labels:
+        name: minecraft
+    spec:
+      containers:
+        - name: minecraft
+          image: "{{ .Values.image.repository }}:{{ .Values.minecraft.version }}"
+          imagePullPolicy: Always
+          ports:
+           - containerPort: 25565
+          resources:
+            requests:
+              cpu: {{ .Values.minecraft.resources.cpu }}
+              memory: {{ .Values.minecraft.resources.memory }}
+            limits:
+              cpu: {{ .Values.minecraft.resources.cpu }}
+              memory: {{ .Values.minecraft.resources.memory }}
+          volumeMounts:
+            - name: minecraft-configmap-volume
+              mountPath: /opt/minecraft/eula.txt
+              subPath: eula.txt
+            - name: minecraft-configmap-volume
+              mountPath: /opt/minecraft/server.properties
+              subPath: server.properties
+      volumes:
+        - name: minecraft-configmap-volume
+          configMap:
+            name: minecraft

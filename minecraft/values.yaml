@@ -1,0 +1,9 @@
+image:
+  repository: ghcr.io/mcservd/minecraft
+
+minecraft:
+  acceptEula: true
+  version: 1.17.1
+  resources:
+    cpu: 100m
+    memory: 4Gi

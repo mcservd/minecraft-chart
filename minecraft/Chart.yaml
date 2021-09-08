@@ -1,0 +1,7 @@
+apiVersion: v2
+name: minecraft
+description: A helm chart for installing a vanilla minecraft server
+
+type: application
+
+version: 0.1.0
