@@ -35,7 +35,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
       - name: Helm chart save
         run: |
-          helm chart save ${{ github.workspace }}/minecraft/ ${{ env.REGISTRY }}:${{ steps.meta.outputs.version }}
+          echo "${{ steps.meta.outputs.tags }}" | xargs -I {} helm chart save ${{ github.workspace }}/minecraft/ {}
       - name: Helm chart push
         run: |
-          helm chart push ${{ env.REGISTRY }}:${{ steps.meta.outputs.version }}
+          echo "${{ steps.meta.outputs.tags }}" | xargs -I {} helm chart push {}
