@@ -1,0 +1,41 @@
+name: Helm Publish
+on:
+  push:
+    tags:
+      - 'v*'
+env:
+  REGISTRY: ghcr.io/${{ github.repository }}
+  HELM_VERSION: 3.6.3
+  HELM_EXPERIMENTAL_OCI: 1
+jobs:
+  Helm-Publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - name: Helm Login
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.REGISTRY }} --username ${{ github.actor }} --password-stdin
+      - name: Extract metadata (tags, labels) for Helm
+        id: meta
+        uses: docker/metadata-action@v3.5.0
+        with:
+          images: ${{ env.REGISTRY }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - name: Helm chart save
+        run: |
+          helm chart save ${{ github.workspace }}/minecraft/ ${{ env.REGISTRY }}:${{ steps.meta.outputs.version }}
+      - name: Helm chart push
+        run: |
+          helm chart push ${{ env.REGISTRY }}:${{ steps.meta.outputs.version }}
