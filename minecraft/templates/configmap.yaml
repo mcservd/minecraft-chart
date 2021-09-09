@@ -56,6 +56,6 @@ data:
     prevent-proxy-connections=false
     use-native-transport=true
     enable-jmx-monitoring=false
-    motd=A Minecraft Server
+    motd=Minecraft hosted in a perfect 32 block cloud
     rate-limit=0
     enable-rcon=false
