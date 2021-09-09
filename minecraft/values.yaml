@@ -5,5 +5,5 @@ minecraft:
   acceptEula: true
   version: 1.17.1
   resources:
-    cpu: 100m
+    cpu: 2
     memory: 4Gi
